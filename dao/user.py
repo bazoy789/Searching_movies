@@ -8,12 +8,11 @@ class UserDAO:
     def get_one(self, uid):
         return self.session.query(User).get(uid)
 
-    def get_all(self, val=None):
-        all_user = self.session.query(User)
-        if 'username' in val:
-            all_user = all_user.filter(User.name == val.get('username')).first()
-        return all_user
+    def get_all(self):
+        return self.session.query(User).all()
 
+    def get_by_name(self, username):
+        return self.session.query(User).filter(User.name == username).first()
 
     def create(self, user_d):
         user = User(**user_d)
