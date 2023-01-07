@@ -10,8 +10,8 @@ class AuthService:
     def __init__(self, user_service: UserService):
         self.user_service = user_service
 
-    def gen_token(self, username, password, is_refresh=False):
-        user = self.user_service.get_by_name(username)
+    def gen_token(self, email, password, is_refresh=False):
+        user = self.user_service.get_by_email(email)
 
         if user is None:
             raise Exception()
@@ -21,7 +21,7 @@ class AuthService:
                 raise Exception()
 
         data = {
-            'username': user.username,
+            'email': user.email,
             'role': user.role
         }
 
@@ -38,10 +38,10 @@ class AuthService:
     def new_refresh(self, refresh_token):
         data = jwt.decode(jwt=refresh_token, key=JWT_SECRET, algorithm=JWT_ALGORITHM)
 
-        username = data.get('username')
-        user = self.user_service.get_by_name(username)
+        email = data.get('email')
+        user = self.user_service.get_by_email(email)
 
         if user is None:
             raise Exception()
 
-        return self.gen_token(username, user.password, is_refresh=True)
+        return self.gen_token(email, user.password, is_refresh=True)

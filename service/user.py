@@ -16,8 +16,8 @@ class UserService:
     def get_all(self):
         return self.dao.get_all()
 
-    def get_by_name(self, username):
-        return self.dao.get_by_name(username)
+    def get_by_email(self, email):
+        return self.dao.get_by_email(email)
 
     def create(self, movie_d):
         movie_d['password'] = self.make_password(movie_d.get('password'))
