@@ -26,6 +26,6 @@ class UserDAO:
         self.session.commit()
 
     def update(self, user_d):
-        user_id = self.get_one(user_d.get('id'))
+        user_id = user_d.get('id')
         self.session.query(User).filter(User.id == user_id).update(user_d)
         self.session.commit()

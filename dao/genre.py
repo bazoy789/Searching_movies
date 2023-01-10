@@ -23,6 +23,6 @@ class GenreDAO:
         self.session.commit()
 
     def update(self, genre_d):
-        up_genre = self.get_one(genre_d.get('id'))
-        self.session.query(Genre).filter(Genre.id == up_genre).update(genre_d)
+        id_genre = genre_d.get('id')
+        self.session.query(Genre).filter(Genre.id == id_genre).update(genre_d)
         self.session.commit()

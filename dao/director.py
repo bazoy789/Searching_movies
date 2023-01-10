@@ -2,7 +2,7 @@ from dao.model.director import Director
 
 
 class DirectorDAO:
-    def __int__(self, session):
+    def __init__(self, session):
         self.session = session
 
     def get_one(self, did):
@@ -23,6 +23,6 @@ class DirectorDAO:
         self.session.commit()
 
     def update(self, director_d):
-        up_director = self.get_one(director_d.get('id'))
-        self.session.query(Director).filter(Director.id == up_director).update(director_d)
+        id_director = director_d.get('id')
+        self.session.query(Director).filter(Director.id == id_director).update(director_d)
         self.session.commit()

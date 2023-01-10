@@ -6,7 +6,6 @@ from constants import JWT_SECRET, JWT_ALGORITHM
 
 
 def auth_req(func):
-
     def wrapper(*args, **kwargs):
         if 'Authorization' not in request.headers:
             abort(401)
@@ -42,3 +41,4 @@ def admin_req(func):
 
         return func(*args, **kwargs)
     return wrapper
+

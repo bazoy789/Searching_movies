@@ -27,7 +27,8 @@ class UserService:
         self.dao.delete(mid)
 
     def update(self, movie_d):
-        movie_d['password'] = self.make_password(movie_d.get('password'))
+        if 'password' in movie_d:
+            movie_d['password'] = self.make_password(movie_d.get('password'))
         return self.dao.update(movie_d)
 
     def make_password(self, password):
@@ -38,8 +39,8 @@ class UserService:
                                             )
         return base64.b64encode(hash_password)
 
-    def compare_password(self, hash_password, password):
-        return hmac.compare_digest(base64.decode(hash_password),
+    def compare_password(self, hash_password, password) -> bool:
+        return hmac.compare_digest(base64.b64decode(hash_password),
                                    hashlib.pbkdf2_hmac(PWD_ALGO,
                                                        password.encode('utf-8'),
                                                        PWD_HASH_SOLT,

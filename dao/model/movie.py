@@ -2,7 +2,6 @@ from marshmallow import Schema, fields
 
 from setup_db import db
 
-
 class Movie(db.Model):
     __tablename__ = 'movie'
     id = db.Column(db.Integer, primary_key=True)
@@ -24,3 +23,5 @@ class MovieSchema(Schema):
     trailer = fields.Str()
     year = fields.Int()
     rating = fields.Float()
+    director_id = fields.Int()
+    genre_id = fields.Int()

@@ -16,17 +16,17 @@ class AuthService:
         if user is None:
             raise Exception()
 
-        if is_refresh != False:
+        if not is_refresh:
             if not self.user_service.compare_password(user.password, password):
                 raise Exception()
 
         data = {
-            'email': user.email,
-            'role': user.role
+            'email': email,
+            'password': password
         }
 
-        min10 = datetime.datetime.utcnow() + datetime.timedelta(minutes=10)
-        data['exp'] = calendar.timegm(min10.timetuple())
+        min11 = datetime.datetime.utcnow() + datetime.timedelta(minutes=11)
+        data['exp'] = calendar.timegm(min11.timetuple())
         access_token = jwt.encode(data, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
         day100 = datetime.datetime.utcnow() + datetime.timedelta(days=100)
@@ -36,12 +36,12 @@ class AuthService:
         return {'access_token': access_token, 'refresh_token': refresh_token}
 
     def new_refresh(self, refresh_token):
-        data = jwt.decode(jwt=refresh_token, key=JWT_SECRET, algorithm=JWT_ALGORITHM)
+        data = jwt.decode(jwt=refresh_token, key=JWT_SECRET, algorithms=[JWT_ALGORITHM])
 
         email = data.get('email')
+        password = data.get('password')
         user = self.user_service.get_by_email(email)
-
         if user is None:
             raise Exception()
 
-        return self.gen_token(email, user.password, is_refresh=True)
+        return self.gen_token(email, password, is_refresh=True)
