@@ -25,8 +25,8 @@ class AuthService:
             'password': password
         }
 
-        min11 = datetime.datetime.utcnow() + datetime.timedelta(minutes=11)
-        data['exp'] = calendar.timegm(min11.timetuple())
+        min60 = datetime.datetime.utcnow() + datetime.timedelta(minutes=60)
+        data['exp'] = calendar.timegm(min60.timetuple())
         access_token = jwt.encode(data, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
         day100 = datetime.datetime.utcnow() + datetime.timedelta(days=100)

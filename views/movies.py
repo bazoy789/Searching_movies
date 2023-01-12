@@ -2,7 +2,6 @@ from flask import request
 from flask_restx import Resource, Namespace
 
 from implemented import movie_service
-from decorators import auth_req, admin_req
 from dao.model.movie import MovieSchema
 
 movies_ns = Namespace('movies')

@@ -11,6 +11,7 @@ from config import Config
 
 from dao.model.user import User
 
+
 def config_app(config_object):
     app = Flask(__name__)
     app.config.from_object(config_object)
@@ -27,12 +28,15 @@ def create_db(app):
     api.add_namespace(users_ns)
     api.add_namespace(auth_ns)
     create_data(app, db)
+
+
 def create_data(app, db):
     with app.app_context():
         db.create_all()
         user = User()
         with db.session.begin(user):
             db.session.commit()
+
 
 app = config_app(Config())
 app.debug = True
