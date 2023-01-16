@@ -1,5 +1,8 @@
 from dao.model.director import Director
 
+from typing import Optional
+from config import Config
+
 
 class DirectorDAO:
     def __init__(self, session):
@@ -8,8 +11,11 @@ class DirectorDAO:
     def get_one(self, did):
         return self.session.query(Director).get(did)
 
-    def get_all(self):
-        return self.session.query(Director).all()
+    def get_all(self, page: Optional[int] = None):
+        if page:
+            return self.session.query(Director).paginate(page=page, per_page=Config.MAX_PAGE, error_out=False).items
+        else:
+            return self.session.query(Director).all()
 
     def create(self, director_d):
         ent = Director(**director_d)

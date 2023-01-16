@@ -4,7 +4,7 @@ import jwt
 
 from constants import JWT_SECRET, JWT_ALGORITHM
 from dao.model.user import UserSchema
-from implemented import user_service
+from implemented import user_service, favorite_service
 
 
 def auth_req_get(func):
@@ -30,6 +30,8 @@ def auth_req_patch(func):
         data = request.headers['Authorization']
         token = data.split('Bearer ')[-1]
         rej = func(*args, **kwargs)
+        if 'password' in rej[0]:
+            del rej[0]['password']
         try:
             dec_toc = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
             user = user_service.get_by_email(dec_toc['email'])
@@ -41,6 +43,7 @@ def auth_req_patch(func):
             abort(401, '++++++')
     return wrapper
 
+
 def auth_req_put(func):
     def wrapper(*args, **kwargs):
         if 'Authorization' not in request.headers:
@@ -51,7 +54,6 @@ def auth_req_put(func):
         dec_toc = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         user = user_service.get_by_email(dec_toc['email'])
         _check = user_service.compare_password(user.password, rej[0]['password_old'])
-        print(_check)
 
         if 'id' not in rej[0]:
             rej[0]['id'] = user.id
@@ -62,10 +64,57 @@ def auth_req_put(func):
         }
         try:
             if not _check:
-                print('1111')
                 raise Exception()
             user_service.update(data)
             return 'update'
         except Exception:
             abort(401, '====')
+    return wrapper
+
+
+def favorite_reg_post(func):
+    def wrapper(*args, **kwargs):
+        if 'Authorization' not in request.headers:
+            abort(401)
+        data = request.headers['Authorization']
+        token = data.split('Bearer ')[-1]
+        rej = func(*args, **kwargs)
+
+        dec_toc = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+
+        user = user_service.get_by_email(dec_toc['email'])
+        new_favorite = {
+            'user_id': user.id,
+            'movie_id': rej[0]
+        }
+        print(new_favorite)
+        try:
+            favorite_service.create(new_favorite)
+        except Exception:
+            abort(401, '====')
+        return True
+    return wrapper
+
+
+def favorite_reg_delete(func):
+    def wrapper(*args, **kwargs):
+        if 'Authorization' not in request.headers:
+            abort(401)
+        data = request.headers['Authorization']
+        token = data.split('Bearer ')[-1]
+        rej = func(*args, **kwargs)
+
+        dec_toc = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+
+        user = user_service.get_by_email(dec_toc['email'])
+        new_favorite = {
+            'user_id': user.id,
+            'movie_id': rej[0]
+        }
+        favorite_service.delete(new_favorite)
+        # try:
+        #
+        # except Exception:
+        #     abort(401, '====')
+        return True
     return wrapper

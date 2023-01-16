@@ -1,3 +1,6 @@
+from typing import Optional
+
+from config import Config
 from dao.model.genre import Genre
 
 
@@ -8,8 +11,11 @@ class GenreDAO:
     def get_one(self, gid):
         return self.session.query(Genre).get(gid)
 
-    def get_all(self):
-        return self.session.query(Genre).all()
+    def get_all(self, page: Optional[int] = None):
+        if page:
+            return self.session.query(Genre).paginate(page=page, per_page=Config.MAX_PAGE, error_out=False).items
+        else:
+            return self.session.query(Genre).all()
 
     def create(self, genre_d):
         exp = Genre(**genre_d)

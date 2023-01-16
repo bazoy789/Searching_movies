@@ -8,8 +8,13 @@ class DirectorService:
     def get_one(self, did):
         return self.dao.get_one(did)
 
-    def get_all(self):
-        return self.dao.get_all()
+    def get_all(self, val):
+        if val.get('page') is not None:
+            director = self.dao.get_all(page=val.get('page'))
+        else:
+            director = self.dao.get_all()
+        return director
+
 
     def create(self, director_d):
         return self.dao.create(director_d)

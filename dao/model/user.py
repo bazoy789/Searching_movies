@@ -10,7 +10,7 @@ class User(db.Model):
     password = db.Column(db.String(300), nullable=True)
     name = db.Column(db.String(100))
     surname = db.Column(db.String(100))
-    favorite_genre = db.Column(db.Integer)
+    favorite_genre = db.Column(db.Integer, db.ForeignKey('genre.id'))
 
 
 class UserSchema(Schema):

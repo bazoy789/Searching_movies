@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restx import Api
 
 from views.directors import directors_ns
+from views.favorite import favorite_ns
 from views.movies import movies_ns
 from views.genres import genres_ns
 from views.users import users_ns
@@ -27,6 +28,7 @@ def create_db(app):
     api.add_namespace(movies_ns)
     api.add_namespace(users_ns)
     api.add_namespace(auth_ns)
+    api.add_namespace(favorite_ns)
     create_data(app, db)
 
 

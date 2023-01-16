@@ -12,7 +12,11 @@ class GenresView(Resource):
 
 
     def get(self):
-        all_genre = genre_service.get_all()
+        page = request.args.get('page', type=int)
+        filters = {
+            'page': page
+        }
+        all_genre = genre_service.get_all(filters)
         return GenreSchema(many=True).dump(all_genre), 200
 
 

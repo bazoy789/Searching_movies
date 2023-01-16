@@ -2,6 +2,7 @@ from typing import Optional
 
 from dao.model.movie import Movie
 from setup_db import db
+from config import Config
 
 class MovieDAO:
     def __init__(self, session):
@@ -24,11 +25,11 @@ class MovieDAO:
     def get_all(self, page: Optional[int] = None, status: Optional[str] = None):
         if page and status == 'new':
             movie_by_arg = self.session.query(Movie).order_by(db.desc(Movie.year))
-            movie_by_arg = movie_by_arg.paginate(page=page, per_page=12, error_out=False).items
+            movie_by_arg = movie_by_arg.paginate(page=page, per_page=Config.MAX_PAGE, error_out=False).items
 
             return movie_by_arg
         elif page:
-            return self.session.query(Movie).paginate(page=page, per_page=12, error_out=False).items
+            return self.session.query(Movie).paginate(page=page, per_page=Config.MAX_PAGE, error_out=False).items
 
         elif status == 'new':
             return self.session.query(Movie).order_by(db.desc(Movie.year))

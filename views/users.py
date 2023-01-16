@@ -17,6 +17,9 @@ class UsersView(Resource):
         rej = request.json
         return rej, 204
 
+
+@users_ns.route('/password')
+class UserView(Resource):
     @auth_req_put
     def put(self):
         rej = request.json

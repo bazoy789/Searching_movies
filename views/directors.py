@@ -11,7 +11,11 @@ class DirectorsView(Resource):
 
 
     def get(self):
-        all_directors = director_service.get_all()
+        page = request.args.get('page', type=int)
+        filters = {
+            'page': page
+        }
+        all_directors = director_service.get_all(filters)
         return DirectorSchema(many=True).dump(all_directors), 200
 
     def post(self):

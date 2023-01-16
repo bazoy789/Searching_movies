@@ -27,7 +27,7 @@ class UserService:
         self.dao.delete(mid)
 
     def update(self, movie_d):
-        if 'password' in movie_d:
+        if 'passwod' in movie_d:
             movie_d['password'] = self.make_password(movie_d.get('password'))
         return self.dao.update(movie_d)
 
