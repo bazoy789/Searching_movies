@@ -9,5 +9,5 @@
 - Marshmallow
 
 ### Run:
-pip install -r requirements
-
+- pip install -r requirements
+-  python app.py
