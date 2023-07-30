@@ -4,8 +4,10 @@
 - Сайт по поиску фильмов
 
 ### Technologies:
-
+- Flask
+- SQLAlchemy
+- Marshmallow
 
 ### Run:
 pip install -r requirements
-docker-compose up -d(postgres, migrations, api)
+
