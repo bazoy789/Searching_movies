@@ -10,4 +10,4 @@
 
 ### Run:
 - pip install -r requirements
--  python app.py
+- app.py для запуска программ
